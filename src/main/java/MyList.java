@@ -1,11 +1,10 @@
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class MyList<T> {
 
     private ArrayList<T> list;
     private int _size;
-    private int MIN_CAPACITY = 0;
     final String nullExceptionText = "Insertion of null is not supported";
 
     public MyList() {
@@ -16,18 +15,13 @@ public class MyList<T> {
         list = new ArrayList<>(capacity);
         _size = 0;
     }
-    public MyList(Collection <T> collection) {
+    public MyList(Collection <T> collection)  throws UnsupportedOperationException {
         if(collection.contains(null)) {
             throw new UnsupportedOperationException(nullExceptionText);
         }
 
         list = new ArrayList<>(collection);
         _size = collection.size();
-    }
-
-    private ArrayList<Optional<T>> getOptionalArrayListFromCollection(Collection <T> collection)
-    {
-        return (ArrayList<Optional<T>>) collection.stream().map(Optional::of).toList();
     }
 
     public Optional<T> get(int index) {
@@ -40,7 +34,7 @@ public class MyList<T> {
         }
     }
 
-    public boolean addAll(Collection<T> c) {
+    public boolean addAll(Collection<T> c)  throws UnsupportedOperationException {
         if(c.contains(null)) {
             throw new UnsupportedOperationException(nullExceptionText);
         }
@@ -48,7 +42,7 @@ public class MyList<T> {
         return list.addAll(c);
     }
 
-    public boolean addAll(int index, Collection<T> c) {
+    public boolean addAll(int index, Collection<T> c)  throws UnsupportedOperationException {
         if(c.contains(null)) {
             throw new UnsupportedOperationException(nullExceptionText);
         }
@@ -58,7 +52,7 @@ public class MyList<T> {
         return list.addAll(index, c);
     }
 
-    public boolean add(T e){
+    public boolean add(T e)  throws UnsupportedOperationException {
         if (e == null) {
             throw new UnsupportedOperationException(nullExceptionText);
         }
@@ -67,7 +61,7 @@ public class MyList<T> {
         return list.add(e);
     }
 
-    public void add(int index, T e) {
+    public void add(int index, T e) throws UnsupportedOperationException {
         if(e == null) {
             throw new UnsupportedOperationException(nullExceptionText);
         }
@@ -91,7 +85,7 @@ public class MyList<T> {
         list.remove(index); // if it is out of bounds list will throw exception by itself
     }
 
-    public void set(int index, T e) {
+    public void set(int index, T e)  throws UnsupportedOperationException {
         if (e == null) {
             throw new UnsupportedOperationException(nullExceptionText);
         }
@@ -111,16 +105,12 @@ public class MyList<T> {
     }
 
     public int sizeTotal() {
-        /**
-         * Count of all elements in list
-         */
+        //Count of all elements in list
         return list.size();
     }
 
     public int size() {
-        /**
-         * Count of non-empty elements in list
-         */
+        // Count of non-empty elements in list
         return _size;
     }
     public void clear() {
@@ -138,7 +128,6 @@ public class MyList<T> {
     }
 
     public void ensureCapacity(int minCapacity) {
-        MIN_CAPACITY = minCapacity;
         list.ensureCapacity(minCapacity);
         int diff = minCapacity - list.size();
         if (diff > 0)
@@ -161,9 +150,20 @@ public class MyList<T> {
     }
 
     public boolean isEmpty() {
-        /**
-         * Is empty or all elements that present are empty
-         */
+        // Is empty or all elements that present are empty
         return _size == 0;
+    }
+
+    private String elementToString(Object o)
+    {
+        if(o == null) {
+            return Optional.empty().toString();
+        }
+        else {
+            return o.toString();
+        }
+    }
+    public String toString() {
+        return "[" + list.stream().map(e->elementToString(e)).collect(Collectors.joining(",")) + "]";
     }
 }

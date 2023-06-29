@@ -3,7 +3,7 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
-        /*MyList<Integer> list = new MyList<>();
+        MyList<Integer> list = new MyList<>();
         list.add(0);
         list.add(1);
         list.add(2);
@@ -17,6 +17,6 @@ public class Main {
         System.out.println("Element at index 7 is " + list.get(7));
         System.out.println("Element at index 6 is " + list.get(6)); // getting non-existent element
 
-        list.add(6,null); // adding null element*/
+        list.add(6,null); // adding null element
     }
 }

@@ -42,16 +42,18 @@ public class MyListTest {
 
     @Test // add(T), get(int)
     void outOfBoundsAdd() {
-        /*
-            Adding element to index, that regular ArrayList would consider out of bounds
-         */
+        // Adding element to index, that regular ArrayList would consider out of bounds
         MyList<Integer> list = new MyList<>();
+        // []
 
-        assertThatCode(()->list.add(1)).doesNotThrowAnyException();
-        assertThat( list.get(0).get() == 1).isTrue();
-        assertThatCode(()->list.add(5,5)).doesNotThrowAnyException();
-        assertThat(list.get(5).get() == 5).isTrue();
-        assertThat(list.get(4));
+        assertThatCode(()->list.add(0)).doesNotThrowAnyException();
+        // [0]
+        assertThat( list.get(0).get() == 0).isTrue();
+
+        assertThatCode(()->list.add(3,3)).doesNotThrowAnyException();
+        // [0,Optional.empty,Optional.empty,3]
+        assertThat(list.get(3).get() == 3).isTrue();
+        assertThat(list.get(2)).isEqualTo(Optional.empty());
     }
 
     @Test
@@ -269,5 +271,25 @@ public class MyListTest {
         list.set(1,1);
         // [Optional.empty,1]
         assertThat(list.isEmpty()).isFalse();
+    }
+
+    @Test
+    void toStringNoElements() {
+        MyList<Integer> list = new MyList<>();
+        assertThat(list.toString()).isEqualTo("[]");
+    }
+    @Test
+    void toStringNoEmpty() {
+        MyList<Integer> list = new MyList<>(Arrays.asList(1,2,3));
+        // [1,2,3]
+        assertThat(list.toString()).isEqualTo("[1,2,3]");
+    }
+    @Test
+    void toStringWithEmpty() {
+        MyList<Integer> list = new MyList<>();
+        // []
+        list.add(2,2);
+        // [Optional.empty,Optional.empty,2]
+        assertThat(list.toString()).isEqualTo("[Optional.empty,Optional.empty,2]");
     }
 }
